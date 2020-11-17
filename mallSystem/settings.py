@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'mallSystem.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mall',
+        'USER': 'root',
+        'PASSWORD': '.',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -130,5 +134,5 @@ MEDIA_URL = '/media/'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend','rest_framework.filters.OrderingFilter']
 }

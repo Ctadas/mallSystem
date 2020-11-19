@@ -12,6 +12,8 @@ class ProductInfoViewSet(viewsets.ModelViewSet):
 	queryset = ProductInfo.objects.all()
 	serializer_class = ProductInfoRelatedSerializers
 
+	filterset_fields = ['id']
+
 	#filterset_fields = ['is_recommend','type_classification__id']
 
 	# def get_queryset(self):
@@ -29,7 +31,7 @@ class SpecificationInfoViewSet(viewsets.ModelViewSet):
 	serializer_class = SpecificationInfoSerializers
 	pagination_class = SpecificationInfoSetPagination
 
-	filterset_fields = ['is_recommend','product__type_classification__id']
+	filterset_fields = ['id','is_recommend','product__type_classification__id']
 	ordering_fields = ['name','price', 'sales']
 
 

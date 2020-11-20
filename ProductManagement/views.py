@@ -4,13 +4,15 @@ from ProductManagement.serializers import ProductClassificationSerializers,Produ
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from ProductManagement.pagination import SpecificationInfoSetPagination
+from ProductManagement.pagination import SpecificationInfoSetPagination,ProductInfoSetPagination
 
 # Create your views here.
 #商品视图集
 class ProductInfoViewSet(viewsets.ModelViewSet):
 	queryset = ProductInfo.objects.all()
 	serializer_class = ProductInfoRelatedSerializers
+	pagination_class = ProductInfoSetPagination
+
 
 	filterset_fields = ['id']
 
@@ -33,10 +35,12 @@ class SpecificationInfoViewSet(viewsets.ModelViewSet):
 
 	filterset_fields = ['id','is_recommend','product__type_classification__id']
 	ordering_fields = ['name','price', 'sales']
+	ordering = 'name'
 
 
 #商品分类视图集
 class ProductClassificationViewSet(viewsets.ModelViewSet):
 	queryset = ProductClassification.objects.all()
 	serializer_class = ProductClassificationSerializers
+
 

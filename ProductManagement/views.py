@@ -5,6 +5,10 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from ProductManagement.pagination import SpecificationInfoSetPagination,ProductInfoSetPagination
+from rest_framework_simplejwt import authentication as jwt_authentication
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+
+
 
 # Create your views here.
 #商品视图集
@@ -13,6 +17,8 @@ class ProductInfoViewSet(viewsets.ModelViewSet):
 	serializer_class = ProductInfoRelatedSerializers
 	pagination_class = ProductInfoSetPagination
 
+	# permission_classes = [IsAuthenticated]
+	# authentication_classes = [jwt_authentication.JWTAuthentication]
 
 	filterset_fields = ['id']
 

@@ -23,4 +23,5 @@ urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root":MEDIA_ROOT}),
     path('ProductManagement/', include('ProductManagement.urls')),
     path('UserManagement/', include('UserManagement.urls')),
+    path('BusinessManagement/', include('BusinessManagement.urls')),
 ]

@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'ProductManagement',
     'UserManagement',
+    'BusinessManagement',
+
 ]
 
 MIDDLEWARE = [
@@ -136,7 +138,12 @@ MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend','rest_framework.filters.OrderingFilter'],
-    'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework_simplejwt.authentication.JWTAuthentication',)
+    'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    'EXCEPTION_HANDLER': 'utils.custom_exception_handler.custom_exception_handler',
+    # 修改默认返回JSON的renderer的类
+    'DEFAULT_RENDERER_CLASSES': (
+        'utils.customrenderer.customrenderer',
+    ),
 }
 
 AUTHENTICATION_BACKENDS = ('UserManagement.backends.UserAuthenticateBackend',)

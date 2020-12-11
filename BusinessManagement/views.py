@@ -5,6 +5,7 @@ from rest_framework import viewsets
 from rest_framework_simplejwt import authentication as jwt_authentication
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from utils.filter_backend import IsOwnerFilterBackend
 
 # Create your views here.
 
@@ -41,5 +42,7 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
 	permission_classes = [IsAuthenticated]
 	authentication_classes = [jwt_authentication.JWTAuthentication]
 
-	filterset_fields = ['user__id']
+	filter_backends = [IsOwnerFilterBackend]
+
+	
 

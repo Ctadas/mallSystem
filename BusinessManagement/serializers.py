@@ -16,17 +16,15 @@ class ProductListCreateSerializers(serializers.ModelSerializer):
 
 class ProductListSerializers(serializers.ModelSerializer):
 	product   = SpecificationInfoSerializers()
+	total_price = serializers.SerializerMethodField()
+
+	def get_total_price(self, obj):
+		return	obj.purchase_quantity * obj.product.price
 
 	class Meta:
 		model = ProductList
-		fields = ['id','product','purchase_quantity','create_time']
+		fields = ['id','product','purchase_quantity','create_time','total_price']
 
-class ProductListSerializers(serializers.ModelSerializer):
-	product   = SpecificationInfoSerializers()
-
-	class Meta:
-		model = ProductList
-		fields = ['id','product','purchase_quantity','create_time']
 
 class OrderFormStatusSerializers(serializers.ModelSerializer):
 
@@ -34,9 +32,9 @@ class OrderFormStatusSerializers(serializers.ModelSerializer):
 		model =OrderFormStatus
 		fields = ['id','name']
 
-class OrderFormSerializers(serializers.ModelSerializer):
-	product_list = ProductListSerializers()
-	status = OrderFormStatusSerializers(read_only=True)
+class OrderFormCreateSerializers(serializers.ModelSerializer):
+	product_list = ProductListSerializers(many=True)
+	status = serializers.PrimaryKeyRelatedField(queryset = OrderFormStatus.objects.all(),allow_null=True)
 
 	class Meta:
 		model =OrderForm
@@ -45,7 +43,16 @@ class OrderFormSerializers(serializers.ModelSerializer):
 class ShoppingCartSerializers(serializers.ModelSerializer):
 	product_list = ProductListSerializers(many=True)
 	user = UserSerializers(read_only=True)
+	total_price = serializers.SerializerMethodField()
+
+	def get_total_price(self, obj):
+		total_price = 0
+		for item in obj.product_list.all():
+			total_price += item.purchase_quantity * item.product.price
+		return total_price
 
 	class Meta:
 		model =ShoppingCart
-		fields = ['id','product_list','user']
+		fields = ['id','product_list','user','total_price']
+
+

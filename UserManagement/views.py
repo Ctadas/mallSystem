@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
+from BusinessManagement.models import ShoppingCart
 
 import requests as httprequests
 import os
@@ -17,8 +18,8 @@ class WXLoginView(APIView):
 	def get_WXopenid(self,code):
 		url ='https://api.weixin.qq.com/sns/jscode2session'
 		#code = json.loads(request.body.decode()).get('code')
-		appid = ''
-		secret = ''
+		appid = 'wx00ac31dfd8c3ce91'
+		secret = 'ed8aedb870d34d570b91c3d251cafbd7'
 		params = {
 			'appid':appid,
 			'secret':secret,
@@ -85,6 +86,7 @@ class WXLoginView(APIView):
 			random_password = 'user:%s'%binascii.hexlify(os.urandom(6)).decode()
 			try:
 				user = User.objects.create_user(username = random_user_name,password = random_password,wx_open_id=openid )
+				ShoppingCart.objects.create(user = user)
 				token = self.get_token(user)
 				return Response({
 					'token':token,

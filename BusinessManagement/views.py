@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from BusinessManagement.models import ProductList,OrderFormStatus,OrderForm,ShoppingCart
-from BusinessManagement.serializers import ProductListSerializers,OrderFormStatusSerializers,OrderFormSerializers,ShoppingCartSerializers,ProductListCreateSerializers
+from BusinessManagement.serializers import ProductListSerializers,OrderFormStatusSerializers,OrderFormCreateSerializers,ShoppingCartSerializers,ProductListCreateSerializers
 from rest_framework import viewsets
 from rest_framework_simplejwt import authentication as jwt_authentication
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
@@ -18,7 +18,6 @@ class ProductListCreateViewSet(viewsets.ModelViewSet):
 	#filterset_fields = ['id']
 
 	def update(self, request, *args, **kwargs):
-		print(self.request.user.id)
 		partial = kwargs.pop('partial', False)
 		if partial == False:
 			partial = request.data.pop('partial', False)
@@ -34,7 +33,7 @@ class ProductListCreateViewSet(viewsets.ModelViewSet):
 		return Response(serializer.data)
 
 
-
+#购物车视图集
 class ShoppingCartViewSet(viewsets.ModelViewSet):
 	queryset = ShoppingCart.objects.all()
 	serializer_class = ShoppingCartSerializers
@@ -44,5 +43,10 @@ class ShoppingCartViewSet(viewsets.ModelViewSet):
 
 	filter_backends = [IsOwnerFilterBackend]
 
-	
+#订单视图集
+class OrderFormViewSet(viewsets.ModelViewSet):
+	queryset = OrderForm.objects.all()
+	serializer_class = OrderFormCreateSerializers
 
+	permission_classes = [IsAuthenticated]
+	authentication_classes = [jwt_authentication.JWTAuthentication]

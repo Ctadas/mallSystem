@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.conf import settings
 from ProductManagement.models import SpecificationInfo
+from django.db.models import Sum
 # Create your models here.
 
  # 商品清单
@@ -39,7 +40,7 @@ class OrderForm(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='order_from')
 	status = models.ForeignKey('OrderFormStatus',on_delete=models.CASCADE)
-
+	total_price = models.FloatField(verbose_name='订单总价', null=True, blank=True)
 
 	create_time  = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
 

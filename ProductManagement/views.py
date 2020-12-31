@@ -39,7 +39,7 @@ class SpecificationInfoViewSet(viewsets.ModelViewSet):
 	serializer_class = SpecificationInfoSerializers
 	pagination_class = SpecificationInfoSetPagination
 
-	filterset_fields = ['id','is_recommend','product__type_classification__id']
+	filterset_fields = ['id','is_recommend','product__type_classification__id','off_shelf']
 	ordering_fields = ['name','price', 'sales']
 	ordering = 'name'
 

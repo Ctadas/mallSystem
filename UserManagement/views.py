@@ -18,8 +18,8 @@ class WXLoginView(APIView):
 	def get_WXopenid(self,code):
 		url ='https://api.weixin.qq.com/sns/jscode2session'
 		#code = json.loads(request.body.decode()).get('code')
-		appid = 'wx00ac31dfd8c3ce91'
-		secret = 'ed8aedb870d34d570b91c3d251cafbd7'
+		appid = ''
+		secret = ''
 		params = {
 			'appid':appid,
 			'secret':secret,

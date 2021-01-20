@@ -10,12 +10,12 @@ class ProductList(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	order_form = models.ForeignKey('OrderForm',on_delete=models.CASCADE,verbose_name='关联的订单',related_name="product_list",null=True,blank=True)
 	shopping_cart = models.ForeignKey('ShoppingCart',on_delete=models.CASCADE,verbose_name='关联的购物车',related_name="product_list",null=True,blank=True)
-	product = models.ForeignKey('ProductManagement.SpecificationInfo',on_delete=models.CASCADE,verbose_name='商品')
+	specification = models.ForeignKey('ProductManagement.SpecificationInfo',on_delete=models.CASCADE,verbose_name='商品')
 	purchase_quantity = models.IntegerField(verbose_name='购买数量',default = 0)
 	create_time  = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
 
 	def __str__ (self):
-		return self.product.name
+		return self.specification.name
 
 	class Meta:
 		ordering = ('id',)
@@ -26,6 +26,7 @@ class ProductList(models.Model):
 class OrderFormStatus(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	name = models.CharField(verbose_name='状态名称',max_length = 200)
+	code = models.CharField(verbose_name='状态代码',max_length = 200)
 
 	def __str__ (self):
 		return self.name

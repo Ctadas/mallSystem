@@ -25,7 +25,7 @@ SECRET_KEY = 'pwxs1aeap($cvatuub-+jz%bk*a^jgco^^y6nv^-&60k@+xfb0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.107']
 
 
 # Application definition
@@ -84,12 +84,44 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mall',
         'USER': 'root',
-        'PASSWORD': '.',
-        'HOST': '',
+        'PASSWORD': 'Xj123456.',
+        'HOST': '8.129.72.123',
         'PORT': '3306',
     }
 }
 
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+        },
+    },
+    'handlers': {
+        'sql': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(os.path.join(BASE_DIR, "logs"), "sql_info.log"),
+            'formatter': 'simple'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['sql'], #'console'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -139,7 +171,7 @@ MEDIA_URL = '/media/'
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend','rest_framework.filters.OrderingFilter'],
     'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework_simplejwt.authentication.JWTAuthentication',),
-    'EXCEPTION_HANDLER': 'utils.custom_exception_handler.custom_exception_handler',
+    # 'EXCEPTION_HANDLER': 'utils.custom_exception_handler.custom_exception_handler',
     # 修改默认返回JSON的renderer的类
     'DEFAULT_RENDERER_CLASSES': (
         'utils.customrenderer.customrenderer',

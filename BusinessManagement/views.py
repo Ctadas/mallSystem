@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from utils.filter_backend import IsOwnerFilterBackend
+from .task import process_overtime_orders,add
 
 # Create your views here.
 
@@ -100,12 +101,16 @@ class OrderFormCreateViewSet(viewsets.ModelViewSet):
 			for item in product_list:
 				item.order_form = order_form
 				item.shopping_cart = None
-				total_price += item.purchase_quantity * item.specification.price 
+				total_price += item.purchase_quantity * item.specification.price
+				item.specification.stock -=  item.purchase_quantity
+				item.specification.save()
 				item.save()
 			order_form.total_price = total_price
 			order_form.save()
 
 			return_serializer = OrderFormSerializers(order_form)
+
+			process_overtime_orders.apply_async([order_form.id],countdown=60)
 
 			return Response(return_serializer.data)
 
@@ -119,7 +124,6 @@ class OrderFormCreateViewSet(viewsets.ModelViewSet):
 
 	def specification_sales_change(self,order):
 		for item in  order.product_list.all():
-			print(item,'----',item.purchase_quantity,'--------',item.specification.sales)
 			item.specification.sales += item.purchase_quantity
 			item.specification.save()
 

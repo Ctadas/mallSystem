@@ -8,7 +8,8 @@ from ProductManagement.pagination import SpecificationInfoSetPagination,ProductI
 from rest_framework_simplejwt import authentication as jwt_authentication
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 
-
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 #商品视图集
@@ -39,7 +40,10 @@ class SpecificationInfoViewSet(viewsets.ModelViewSet):
 	serializer_class = SpecificationInfoSerializers
 	pagination_class = SpecificationInfoSetPagination
 
+	filter_backends = [filters.SearchFilter, DjangoFilterBackend,filters.OrderingFilter]
+
 	filterset_fields = ['id','is_recommend','product__type_classification__id','off_shelf']
+	search_fields = ['name', 'product__name']
 	ordering_fields = ['name','price', 'sales']
 	ordering = 'name'
 

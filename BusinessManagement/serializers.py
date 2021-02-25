@@ -14,6 +14,19 @@ class ProductListCreateSerializers(serializers.ModelSerializer):
 		model = ProductList
 		fields = ['id','specification','purchase_quantity','create_time','order_form','shopping_cart']
 
+	def validate(self, attrs):
+		specification = attrs.get('specification',None)
+		purchase_quantity = attrs.get('purchase_quantity',None)
+		if specification is None:
+			specification = self.instance.specification
+		if purchase_quantity is None:
+			purchase_quantity = self.instance.purchase_quantity
+
+		if purchase_quantity and specification and purchase_quantity > specification.stock:
+			raise serializers.ValidationError('超出商品的库存！')
+		return attrs
+
+
 class ProductListSerializers(serializers.ModelSerializer):
 	specification   = SpecificationInfoSerializers()
 	total_price = serializers.SerializerMethodField()
@@ -40,7 +53,7 @@ class OrderFormSerializers(serializers.ModelSerializer):
 
 	class Meta:
 		model =OrderForm
-		fields = ['id','status','user','total_price','product_list','create_time']
+		fields = ['id','status','user','total_price','product_list','create_time','order_code']
 
 class OrderFormCreateSerializers(serializers.ModelSerializer):
 	user = UserSerializers(read_only=True)
@@ -58,7 +71,8 @@ class ShoppingCartSerializers(serializers.ModelSerializer):
 	def get_total_price(self, obj):
 		total_price = 0
 		for item in obj.product_list.all():
-			total_price += item.purchase_quantity * item.specification.price
+			if item.specification.off_shelf == False and item.purchase_quantity<=item.specification.stock:
+				total_price += item.purchase_quantity * item.specification.price
 		return total_price
 
 	class Meta:

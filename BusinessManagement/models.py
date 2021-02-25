@@ -42,6 +42,7 @@ class OrderForm(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='order_from')
 	status = models.ForeignKey('OrderFormStatus',on_delete=models.CASCADE)
 	total_price = models.FloatField(verbose_name='订单总价', null=True, blank=True)
+	order_code = models.CharField(verbose_name='订单号',editable=False,unique=True,max_length = 200)
 
 	create_time  = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
 

@@ -25,7 +25,7 @@ SECRET_KEY = 'pwxs1aeap($cvatuub-+jz%bk*a^jgco^^y6nv^-&60k@+xfb0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.107']
+ALLOWED_HOSTS = ['192.168.1.107','8.129.72.123','www.ctadas.cn','ctadas.cn']
 
 
 # Application definition
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'ProductManagement',
     'UserManagement',
     'BusinessManagement',
-
+    'FeaturesManagement',
 ]
 
 MIDDLEWARE = [

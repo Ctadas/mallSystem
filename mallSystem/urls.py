@@ -24,4 +24,5 @@ urlpatterns = [
     path('ProductManagement/', include('ProductManagement.urls')),
     path('UserManagement/', include('UserManagement.urls')),
     path('BusinessManagement/', include('BusinessManagement.urls')),
+    path('FeaturesManagement/', include('FeaturesManagement.urls')),
 ]
